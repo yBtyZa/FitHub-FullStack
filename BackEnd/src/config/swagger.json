@@ -1,0 +1,411 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Usuários e Endereços",
+    "description": "Documentação da API para o domínio de Usuários e Endereços",
+    "version": "1.2.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "paths": {
+    "/usuarios": {
+      "get": {
+        "summary": "Lista todos os usuários com paginação e filtro de ativos",
+        "tags": ["Usuários"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Número de usuários por página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "ativo",
+            "in": "query",
+            "description": "Filtrar apenas usuários ativos (true/false)",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalItems": {
+                      "type": "integer",
+                      "description": "Total de usuários"
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "description": "Total de páginas"
+                    },
+                    "currentPage": {
+                      "type": "integer",
+                      "description": "Página atual"
+                    },
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Usuario"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cadastra um novo usuário",
+        "tags": ["Usuários"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Usuario"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação de dados"
+          }
+        }
+      }
+    },
+    "/usuarios/{id}": {
+      "get": {
+        "summary": "Obtém um usuário específico por ID",
+        "tags": ["Usuários"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário retornado com sucesso"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um usuário existente",
+        "tags": ["Usuários"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Usuario"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um usuário",
+        "tags": ["Usuários"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Usuário excluído com sucesso"
+          },
+          "400": {
+            "description": "Usuário tem locais associados"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      }
+    },
+    "/usuarios/ativos": {
+      "get": {
+        "summary": "Lista todos os usuários ativos",
+        "tags": ["Usuários"],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários ativos retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Usuario"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/{id}/enderecos": {
+      "post": {
+        "summary": "Cadastra um novo endereço para um usuário",
+        "tags": ["Endereços"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Endereco"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Endereço criado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação de dados"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza o endereço de um usuário",
+        "tags": ["Endereços"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Endereco"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Endereço atualizado com sucesso"
+          },
+          "404": {
+            "description": "Endereço ou usuário não encontrado"
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista os endereços de um usuário específico",
+        "tags": ["Endereços"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Endereços retornados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Endereco"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um endereço de um usuário",
+        "tags": ["Endereços"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do usuário"
+          },
+          {
+            "name": "enderecoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do endereço"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Endereço excluído com sucesso"
+          },
+          "404": {
+            "description": "Endereço ou usuário não encontrado"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Usuario": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "João Silva"
+          },
+          "email": {
+            "type": "string",
+            "example": "joao.silva@email.com"
+          },
+          "cpf": {
+            "type": "string",
+            "example": "123.456.789-10"
+          },
+          "sexo": {
+            "type": "string",
+            "enum": ["masculino", "feminino", "outro"]
+          },
+          "data_nascimento": {
+            "type": "string",
+            "example": "1990-12-12"
+      
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "Endereco": {
+        "type": "object",
+        "properties": {
+          "rua": {
+            "type": "string",
+            "example": "Rua Exemplo"
+          },
+          "numero": {
+            "type": "string",
+            "example": "123"
+          },
+          "bairro": {
+            "type": "string",
+            "example": "Centro"
+          },
+          "cidade": {
+            "type": "string",
+            "example": "São Paulo"
+          },
+          "estado": {
+            "type": "string",
+            "example": "SP"
+          },
+          "cep": {
+            "type": "string",
+            "example": "01000-000"
+          },
+          "complemento": {
+            "type": "string",
+            "example": "Apto 101"
+          },
+          "latitude": {
+            "type": "string",
+            "example": "-23.5505"
+          },
+          "longitude": {
+            "type": "string",
+            "example": "-46.6333"
+          }
+        }
+      }
+    }
+  }
+}
+
+ 

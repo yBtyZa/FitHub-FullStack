@@ -1,0 +1,250 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Locais",
+    "description": "Documentação da API para o domínio de Locais",
+    "version": "1.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Local": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Parque Central"
+          },
+          "pratica_esportiva": {
+            "type": "string",
+            "example": "Futebol"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "Espaço amplo para prática de esportes"
+          },
+          "endereco": {
+            "type": "object",
+            "properties": {
+              "cep": {
+                "type": "string",
+                "example": "12345-678"
+              },
+              "numero": {
+                "type": "string",
+                "example": "100"
+              },
+              "complemento": {
+                "type": "string",
+                "example": "Apto 202"
+              },
+              "logradouro": {
+                "type": "string",
+                "example": "Av. Brasil"
+              },
+              "bairro": {
+                "type": "string",
+                "example": "Centro"
+              },
+              "cidade": {
+                "type": "string",
+                "example": "Florianópolis"
+              },
+              "estado": {
+                "type": "string",
+                "example": "SC"
+              },
+              "latitude": {
+                "type": "number",
+                "example": -27.595378
+              },
+              "longitude": {
+                "type": "number",
+                "example": -48.54805
+              }
+            },
+            "required": ["cep", "numero"]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-12T14:48:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-12T14:50:00.000Z"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": null
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/locais": {
+      "get": {
+        "summary": "Lista todos os locais",
+        "tags": ["Locais"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de locais retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Local"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cadastra um novo local",
+        "tags": ["Locais"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Local"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Local criado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação de dados"
+          }
+        }
+      }
+    },
+    "/locais/{id}": {
+      "get": {
+        "summary": "Obtém um local específico por ID",
+        "tags": ["Locais"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Local retornado com sucesso"
+          },
+          "404": {
+            "description": "Local não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um local existente",
+        "tags": ["Locais"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Local"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Local atualizado com sucesso"
+          },
+          "404": {
+            "description": "Local não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um local",
+        "tags": ["Locais"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Local excluído com sucesso"
+          },
+          "404": {
+            "description": "Local não encontrado"
+          }
+        }
+      }
+    }
+  }
+}
