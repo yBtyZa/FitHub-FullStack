@@ -118,7 +118,7 @@ docker-compose up
 - react-router-dom: Biblioteca para gerenciar a navegação entre páginas em aplicações React de forma declarativa.
 - react-toastify: Biblioteca para exibir notificações em estilo toast, melhorando a experiência do usuário ao fornecer feedback visual.
 - yup: Usada também no front-end para validação de dados, garantindo que os formulários atendam aos requisitos definidos.
-### Banco de dados - PosrgreSQL
+### Banco de dados - PostgreSQL
 ### Virtualização - Docker
 ---
 <div align="center"><div/>
