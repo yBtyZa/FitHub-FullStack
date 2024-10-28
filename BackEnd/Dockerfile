@@ -1,5 +1,12 @@
 FROM node:alpine
 
+# Instala o dockerize
+ENV DOCKERIZE_VERSION v0.8.0
+RUN apk update --no-cache \
+    && apk add --no-cache wget openssl \
+    && wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
+    && apk del wget
+
 WORKDIR /usr/src/app
 
 # copia o package e instala os requisitos
@@ -14,7 +21,7 @@ COPY . .
 EXPOSE ${APP_PORT}
 
 # comando que roda quando inicia
-CMD ["npm", "run", "start:prod"]
+ENTRYPOINT  ["dockerize", "-wait", "tcp://db:5432", "-timeout", "20s", "npm", "run", "start:prod"]
 
 
 # [comando] [função] [-t -> tag] [nome do container] [conteudo -> "." se refere a partir da pasta atual]
