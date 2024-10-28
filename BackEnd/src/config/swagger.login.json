@@ -1,17 +1,13 @@
 {
   "openapi": "3.0.0",
-  "info": {
-    "title": "API de Autenticação",
-    "description": "Documentação da API para autenticação",
-    "version": "1.0.0"
-  },
+  
   "servers": [
     {
       "url": "http://localhost:3000/api"
     }
   ],
   "paths": {
-    "/login": {
+    "/auth": {
       "post": {
         "summary": "Realiza o login de um usuário",
         "tags": ["Autenticação"],
@@ -25,7 +21,7 @@
                     "type": "string",
                     "example": "joao.silva@email.com"
                   },
-                  "senha": {
+                  "password": {
                     "type": "string",
                     "example": "senha123"
                   }

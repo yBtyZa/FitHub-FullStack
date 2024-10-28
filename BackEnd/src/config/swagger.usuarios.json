@@ -1,0 +1,396 @@
+{
+  "openapi": "3.0.0",
+  
+  "paths": {
+    "/usuarios": {
+      "post": {
+        "summary": "Cria um novo usuário",
+        "tags": ["Usuários"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "example": "Carlos Silva"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "carlos.silva@email.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "12345678"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "example": "111.222.333-44"
+                  },
+                  "sexo": {
+                    "type": "string",
+                    "example": "masculino"
+                  },
+                  "data_nascimento": {
+                    "type": "string",
+                    "example": "10/10/1990"
+                  },
+                  "endereco": {
+                    "type": "object",
+                    "properties": {
+                      "logradouro": {
+                        "type": "string",
+                        "example": "Rua dos Testes"
+                      },
+                      "numero": {
+                        "type": "string",
+                        "example": "123"
+                      },
+                      "bairro": {
+                        "type": "string",
+                        "example": "Centro"
+                      },
+                      "cidade": {
+                        "type": "string",
+                        "example": "TestCity"
+                      },
+                      "estado": {
+                        "type": "string",
+                        "example": "TC"
+                      },
+                      "cep": {
+                        "type": "string",
+                        "example": "12345-678"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "usuario": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "nome": {
+                          "type": "string",
+                          "example": "Carlos Silva"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "carlos.silva@email.com"
+                        },
+                        "cpf": {
+                          "type": "string",
+                          "example": "111.222.333-44"
+                        },
+                        "sexo": {
+                          "type": "string",
+                          "example": "masculino"
+                        },
+                        "data_nascimento": {
+                          "type": "string",
+                          "example": "1990-10-10"
+                        },
+                        "endereco": {
+                          "type": "object",
+                          "properties": {
+                            "logradouro": {
+                              "type": "string",
+                              "example": "Rua dos Testes"
+                            },
+                            "numero": {
+                              "type": "string",
+                              "example": "123"
+                            },
+                            "bairro": {
+                              "type": "string",
+                              "example": "Centro"
+                            },
+                            "cidade": {
+                              "type": "string",
+                              "example": "TestCity"
+                            },
+                            "estado": {
+                              "type": "string",
+                              "example": "TC"
+                            },
+                            "cep": {
+                              "type": "string",
+                              "example": "12345-678"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro na validação ou erro de dados fornecidos"
+          },
+          "500": {
+            "description": "Erro no servidor"
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os usuários",
+        "tags": ["Usuários"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de todos os usuários cadastrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "nome": {
+                        "type": "string",
+                        "example": "Carlos Silva"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "carlos.silva@email.com"
+                      },
+                      "cpf": {
+                        "type": "string",
+                        "example": "111.222.333-44"
+                      },
+                      "sexo": {
+                        "type": "string",
+                        "example": "masculino"
+                      },
+                      "ativo": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao listar usuários"
+          },
+          "500": {
+            "description": "Erro no servidor"
+          }
+        }
+      }
+    },
+    "/usuarios/{id}": {
+      "get": {
+        "summary": "Obtém detalhes de um usuário por ID",
+        "tags": ["Usuários"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do usuário"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do usuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "Carlos Silva"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "carlos.silva@email.com"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "example": "111.222.333-44"
+                    },
+                    "sexo": {
+                      "type": "string",
+                      "example": "masculino"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de um usuário por ID",
+        "tags": ["Usuários"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do usuário"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "example": "Carlos Silva"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "carlos.silva@email.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "12345678"
+                  },
+                  "sexo": {
+                    "type": "string",
+                    "example": "masculino"
+                  },
+                  "data_nascimento": {
+                    "type": "string",
+                    "example": "1990-10-10"
+                  },
+                  "endereco": {
+                    "type": "object",
+                    "properties": {
+                      "logradouro": {
+                        "type": "string",
+                        "example": "Rua dos Testes"
+                      },
+                      "numero": {
+                        "type": "string",
+                        "example": "123"
+                      },
+                      "bairro": {
+                        "type": "string",
+                        "example": "Centro"
+                      },
+                      "cidade": {
+                        "type": "string",
+                        "example": "TestCity"
+                      },
+                      "estado": {
+                        "type": "string",
+                        "example": "TC"
+                      },
+                      "cep": {
+                        "type": "string",
+                        "example": "12345-678"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso"
+          },
+          "400": {
+            "description": "Erro na atualização"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta um usuário por ID",
+        "tags": ["Usuários"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do usuário"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Usuário deletado com sucesso"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

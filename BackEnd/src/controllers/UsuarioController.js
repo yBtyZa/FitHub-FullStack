@@ -1,4 +1,5 @@
 const { usuarioSchema } = require('../validations/usuario.validation');
+const { updateUsuarioSchema } = require('../validations/updateUsuario.validation');
 const Usuario = require('../models/Usuario');
 const Local = require('../models/Local');
 const Endereco = require('../models/Endereco');  // Importa o modelo Endereço
@@ -59,8 +60,7 @@ class UsuarioController {
 
             // Retorna os dados do usuário e endereço criados
             return response.status(201).json({
-                usuario,
-                endereco: enderecoCriado
+                mensagem: 'Usuario criado com sucesso',
             });
 
         } catch (error) {
@@ -113,7 +113,7 @@ class UsuarioController {
 
         try {
             const { id } = req.params;  // Pega o ID do usuário dos parâmetros da URL
-            const { email, cpf, endereco,data_nascimento, ...novosDados } = req.body;
+            const { email, endereco, data_nascimento, ...novosDados } = req.body;
 
             // Encontra o usuário pelo ID
             const usuario = await Usuario.findByPk(id, { transaction });
@@ -129,18 +129,14 @@ class UsuarioController {
               }
 
 
-            await usuarioSchema.validate(req.body, { abortEarly: false });
+            await updateUsuarioSchema.validate(req.body, { abortEarly: false });
 
             // Verificar duplicidade de email
             const emailExistente = await Usuario.findOne({ where: { email, id: { [Op.ne]: id } } });
             if (emailExistente) {
                 return res.status(400).json({ mensagem: 'Email já cadastrado por outro usuário' });
-            }
-
-            // Verificar duplicidade de CPF
-            const cpfExistente = await Usuario.findOne({ where: { cpf, id: { [Op.ne]: id } } });
-            if (cpfExistente) {
-                return res.status(400).json({ mensagem: 'CPF já cadastrado por outro usuário' });
+            } else {
+                novosDados.email = email;
             }
 
             // Converte a data de nascimento para o formato YYYY-MM-DD se estiver presente
@@ -167,15 +163,19 @@ class UsuarioController {
             // Comita a transação (confirma todas as operações)
             await transaction.commit();
 
-            return res.status(200).json({ usuario, endereco: enderecoExistente });
+            return res.status(200).json({ mensagem: 'Usuário atualizado com sucesso' });
         } catch (error) {
             await transaction.rollback();
+
+            if(error.name === "SequelizeUniqueConstraintError" ){
+                return res.status(400).json({ mensagem: 'Email já cadastrado por outro usuário' });
+            }
 
             // Se o erro for de validação do Yup
             if (error.name === 'ValidationError') {
                 return res.status(400).json({ mensagem: error.errors });
             }
-            console.error(error);
+            console.error(error.code);
 
             return res.status(500).json({ mensagem: 'Erro ao atualizar usuário' });
         }

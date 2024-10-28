@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:prod": "node src/index.js",
+    "start:prod": "npm run migrate && node src/index.js",
     "start": "nodemon src/index.js",
     "build": "npm run clean && npm run migrate && npm run seed",
     "clean": "rm -rf dist",
